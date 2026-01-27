@@ -11,7 +11,11 @@ let currentState = {
     categoryScores: { Mantık: 0, Matematik: 0, Görsel: 0, Sözel: 0 },
     categoryTotal: { Mantık: 0, Matematik: 0, Görsel: 0, Sözel: 0 },
     testStartTime: null,
-    earnedBadges: []
+    earnedBadges: [],
+    xp: parseInt(localStorage.getItem('user_xp') || '0'),
+    level: parseInt(localStorage.getItem('user_level') || '1'),
+    streak: parseInt(localStorage.getItem('user_streak') || '0'),
+    lastTestDate: localStorage.getItem('last_test_date') || null
 };
 
 const ALL_BADGES = [
@@ -228,7 +232,50 @@ function processResults() {
     if (questText && questText.includes("3 dakika") && totalTime < 180) completeDailyQuest();
     if (questText && questText.includes("Kusursuz") && currentState.score === 20) completeDailyQuest();
 
+    calculateXP(finalIQ, currentState.score);
+    updateStreak();
     displayFinalResults(finalIQ);
+}
+
+function calculateXP(iq, correctAnswers) {
+    const earnedXP = Math.round((iq * 2) + (correctAnswers * 50));
+    currentState.xp += earnedXP;
+    
+    // Basit level sistemi: Her level için 1000 XP
+    const newLevel = Math.floor(currentState.xp / 1000) + 1;
+    
+    if (newLevel > currentState.level) {
+        showLevelUp(newLevel);
+    }
+    
+    currentState.level = newLevel;
+    localStorage.setItem('user_xp', currentState.xp);
+    localStorage.setItem('user_level', currentState.level);
+    
+    return earnedXP;
+}
+
+function updateStreak() {
+    const today = new Date().toDateString();
+    if (currentState.lastTestDate !== today) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (currentState.lastTestDate === yesterday.toDateString()) {
+            currentState.streak++;
+        } else {
+            currentState.streak = 1;
+        }
+        
+        currentState.lastTestDate = today;
+        localStorage.setItem('user_streak', currentState.streak);
+        localStorage.setItem('last_test_date', today);
+    }
+}
+
+function showLevelUp(level) {
+    // Gelecekte bir kutlama efekti eklenebilir
+    console.log("TEBRİKLER! Seviye atladın: " + level);
 }
 
 function displayFinalResults(iq) {
@@ -252,7 +299,21 @@ function displayFinalResults(iq) {
     });
 
     renderEarnedBadges();
-    saveToHistory(iq, rank);
+    saveToHistory(iq, rank, currentState.categoryScores);
+    updateProfileUI();
+}
+
+function updateProfileUI() {
+    const levelEl = document.getElementById('user-level');
+    const xpBarEl = document.getElementById('xp-progress-fill');
+    const streakEl = document.getElementById('streak-count');
+    
+    if (levelEl) levelEl.innerText = currentState.level;
+    if (xpBarEl) {
+        const xpInCurrentLevel = currentState.xp % 1000;
+        xpBarEl.style.width = `${(xpInCurrentLevel / 1000) * 100}%`;
+    }
+    if (streakEl) streakEl.innerText = currentState.streak;
 }
 
 function grantBadge(badgeId) {
@@ -325,13 +386,21 @@ function shuffleArray(arr) {
     return arr;
 }
 
-function saveToHistory(iq, rank) {
+function saveToHistory(iq, rank, categories) {
     let h = JSON.parse(localStorage.getItem('iq_elite_history') || '[]');
-    h.push({ iq, rank, date: new Date().toLocaleDateString('tr-TR') });
-    localStorage.setItem('iq_elite_history', JSON.stringify(h.slice(-10)));
+    h.push({ 
+        iq, 
+        rank, 
+        date: new Date().toLocaleDateString('tr-TR'),
+        categories: { ...categories }
+    });
+    localStorage.setItem('iq_elite_history', JSON.stringify(h.slice(-15))); // 15 kayda çıkardık
 }
 
 function viewHistory() { window.open('history.html', '_blank'); }
 function restart() { initDailyQuest(); showScreen('screen-welcome'); updateMascot('🦊'); }
 
-window.onload = initDailyQuest;
+window.onload = () => {
+    initDailyQuest();
+    updateProfileUI();
+};
