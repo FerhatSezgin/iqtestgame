@@ -213,9 +213,7 @@ function saveToHistory(iq, rank) {
 }
 
 function viewHistory() {
-    let history = JSON.parse(localStorage.getItem('iq_elite_history') || '[]');
-    if (history.length === 0) { alert("Henüz kayıt yok!"); return; }
-    alert("📊 Son Skorların:\n\n" + history.map(h => `${h.date}: ${h.iq} IQ (${h.rank})`).join('\n'));
+    window.open('history.html', '_blank');
 }
 
 function restart() {
