@@ -1,4 +1,4 @@
-// --- Elite+ v2 IQ Test Engine ---
+// --- Elite+ v3 IQ Test Engine (Professional Pool & Audit) ---
 
 let currentState = {
     mode: null,
@@ -14,7 +14,6 @@ let currentState = {
     earnedBadges: []
 };
 
-// --- Achievements (Badges) Definitions ---
 const ALL_BADGES = [
     { id: 'speed_demon', name: 'Hız İblisi', icon: '⚡', desc: 'Bir soruyu 3 saniyeden kısa sürede çöz!' },
     { id: 'perfect_score', name: 'Kusursuz Ruh', icon: '💎', desc: '20/20 doğru cevapla testi bitir.' },
@@ -24,59 +23,103 @@ const ALL_BADGES = [
     { id: 'early_bird', name: 'Erkenci Kuş', icon: '🌅', desc: 'Sabah saatlerinde bir test çöz.' }
 ];
 
-// --- Enhanced Question Database (Cognitive Based) ---
 const questionsDB = {
     kids: [
-        // Görsel Hafıza & Desen
         { text: "Şu deseni aklında tut: 🟥 🟦 🟥. Sence bir sonraki ne olmalı?", options: ["🟦", "🟥", "🟢", "🟡"], correct: 0, cat: "Görsel" },
         { text: "Şekil Döndürme: ⬅️ okunu sağa çevirirsek hangisi olur?", options: ["⬆️", "➡️", "⬇️", "⬅️"], correct: 1, cat: "Görsel" },
         { text: "Hangi parça eksik?\n[ 🌕 🌑 ] [ 🌕 ? ]", options: ["🌑", "🌕", "⭐", "☀️"], correct: 0, cat: "Görsel" },
         { text: "Büyükten küçüğe sıralarsak en sonda hangisi olur?", options: ["🐘 Fil", "🐈 Kedi", "🐜 Karınca", "🐇 Tavşan"], correct: 2, cat: "Mantık" },
         { text: "Gölgeyi bul: Bir üçgenin (🔺) gölgesi hangisi olabilir?", options: ["🔻", "⬛", "🔵", "🔺"], correct: 3, cat: "Görsel" },
-        { text: "Eğer Elma meyveyse, Havuç nedir?", options: ["Meyve", "Sebze", "İçecek", "Tatlı"], correct: 1, cat: "Mantık" },
+        { text: "Eğer Elma meyveyse, Havuç nedir?", options: ["Meyve", "Sebze", "İçecek", "Tatlı"], correct: 1, cat: "Sözel" },
         { text: "Hangi kutuda daha çok top var?\n[⚽⚽] [🏀🏀🏀] [🎾]", options: ["Birinci", "İkinci", "Üçüncü", "Hepsi aynı"], correct: 1, cat: "Matematik" },
         { text: "Piyano : Müzisyen :: Fırça : ?", options: ["Ressam", "Aşçı", "İşçi", "Şoför"], correct: 0, cat: "Sözel" },
         { text: "Hangi sayı diğerlerinden büyüktür?", options: ["8", "12", "5", "9"], correct: 1, cat: "Matematik" },
         { text: "Akşam olunca gökyüzünde ne görürüz?", options: ["☀️ Güneş", "🌙 Ay", "🌈 Gökkuşağı", "☁️ Beyaz Bulut"], correct: 1, cat: "Mantık" },
-        // Daha Zorlayıcı Çocuk Soruları
         { text: "Ayna Görüntüsü: 'b' harfinin aynadaki hali hangisidir?", options: ["p", "d", "q", "b"], correct: 1, cat: "Görsel" },
         { text: "Eğer 1 elma 2 portakala eşitse, 2 elma kaç portakal eder?", options: ["2", "3", "4", "5"], correct: 2, cat: "Matematik" },
         { text: "Mantık Zinciri: Ali Ayşe'den uzun, Ayşe ise Mehmet'ten uzun. En kısa kim?", options: ["Ali", "Ayşe", "Mehmet", "Bilinemez"], correct: 2, cat: "Mantık" },
-        { text: "Hangisi sese duyarlıdır?", options: ["Göz", "Burun", "Kulak", "El"], correct: 2, cat: "Mantık" },
+        { text: "Hangisi sese duyarlıdır?", options: ["Göz", "Burun", "Kulak", "El"], correct: 2, cat: "Sözel" },
         { text: "Tersini Bul: 🧊 Soğuk :: 🔥 ?", options: ["Sıcak", "Islak", "Kuru", "Yumuşak"], correct: 0, cat: "Sözel" },
         { text: "Hangi eşleşme yanlıştır?", options: ["🐶-Hav", "🐱-Cik", "🐮-Möö", "🐑-Mee"], correct: 1, cat: "Mantık" },
         { text: "Bir haftada kaç gün vardır?", options: ["5", "6", "7", "8"], correct: 2, cat: "Matematik" },
         { text: "Kırmızı + Sarı = ?", options: ["Yeşil", "Turuncu", "Mor", "Siyah"], correct: 1, cat: "Görsel" },
         { text: "Hangisi bir ulaşım aracı değildir?", options: ["🚗 Araba", "🏡 Ev", "✈️ Uçak", "🚢 Gemi"], correct: 1, cat: "Mantık" },
-        { text: "Gökyüzü neden mavidir?", options: ["Deniz yansıdığı için", "Işık kırıldığı için", "Bulutlar olduğu için", "Boyandığı için"], correct: 1, cat: "Mantık" }
+        { text: "Gökyüzü neden mavidir?", options: ["Deniz yansıdığı için", "Işık kırıldığı için", "Bulutlar olduğu için", "Boyandığı için"], correct: 1, cat: "Mantık" },
+        { text: "Sırayı Tamamla: 1, 2, 4, 8, ?", options: ["10", "12", "16", "20"], correct: 2, cat: "Matematik" },
+        { text: "Karnımız acıkınca ne yaparız?", options: ["Oyun oynarız", "Yemek yeriz", "Uyuruz", "Su içeriz"], correct: 1, cat: "Mantık" },
+        { text: "Hangi hayvan uçabilir?", options: ["🐘 Fil", "🐔 Tavuk", "🐒 Maymun", "🦒 Zürafa"], correct: 1, cat: "Mantık" },
+        { text: "Güneş hangi yönden doğar?", options: ["Batı", "Doğu", "Kuzey", "Güney"], correct: 1, cat: "Mantık" },
+        { text: "Elma : Kırmızı :: Muz : ?", options: ["Mavi", "Yeşil", "Sarı", "Siyah"], correct: 2, cat: "Sözel" },
+        { text: "Hangisi bir müzik aletidir?", options: ["🎻 Keman", "🍴 Çatal", "✏️ Kalem", "🧥 Ceket"], correct: 0, cat: "Sözel" },
+        { text: "Bir elde kaç parmak vardır?", options: ["4", "5", "6", "10"], correct: 1, cat: "Matematik" },
+        { text: "Hangisi yiyecek değildir?", options: ["🍕 Pizza", "🍎 Elma", "🧱 Tuğla", "🍞 Ekmek"], correct: 2, cat: "Mantık" },
+        { text: "Daire hangisidir?", options: ["🟦", "🔺", "🟢", "⭐"], correct: 2, cat: "Görsel" },
+        { text: "Yağmur nereden yağar?", options: ["Toprak", "Deniz", "Bulut", "Güneş"], correct: 2, cat: "Mantık" }
     ],
     adults: [
-      // (Önceki yetişkin soruları aynen korunabilir veya daha da zorlaştırılabilir)
-      { text: "Bir gölde nilüfer çiçekleri her gün iki katına çıkar. 48 günde gölü kaplıyorsa, yarısını kaç günde kaplar?", options: ["24", "46", "47", "12"], correct: 2, cat: "Mantık" },
-      { text: "3, 6, 12, 24, ? serisini tamamlayın.", options: ["36", "48", "60", "72"], correct: 1, cat: "Matematik" },
-      // ... (Genişletilmiş 50+ veritabanı buraya entegre edilir)
-      { text: "121, 144, 169, 196, ?", options: ["215", "225", "256", "240"], correct: 1, cat: "Matematik" },
-      { text: "Saat 03:15'te akrep ile yelkovan arasındaki açı?", options: ["0°", "7.5°", "15°", "2.5°"], correct: 1, cat: "Matematik" },
-      { text: "Hangi sayı seriyi tamamlar? 1, 1, 2, 3, 5, 8, ?", options: ["11", "12", "13", "14"], correct: 2, cat: "Matematik" },
-      { text: "Analoji: Paradoks / Çelişki :: Analoji / ?", options: ["Benzerlik", "Farklılık", "Eş anlam", "Zıtlık"], correct: 0, cat: "Sözel" },
-      { text: "Matris:\n[ ⚫ ⚪ ] [ ⚪ ⚫ ]\n[ ⚫ ⚫ ] [ ? ]", options: ["⚪ ⚪", "⚫ ⚫", "⚫ ⚪", "⚪ ⚫"], correct: 0, cat: "Görsel" },
-      { text: "Tüm A'lar B ise, bazı B'ler A mıdır?", options: ["Kesinlikle", "Hayır", "Belki", "Bilinemez"], correct: 0, cat: "Mantık" },
-      { text: "Ekmek : Buğday :: Şarap : ?", options: ["Elma", "Üzüm", "Armut", "Kiraz"], correct: 1, cat: "Sözel" },
-      { text: "Dünya'nın en yüksek dağı?", options: ["Ağrı", "Everest", "K2", "Lhotse"], correct: 1, cat: "Mantık" },
-      { text: "Bir baba 34, oğlu 8 yaşında. Kaç yıl sonra babası oğlunun 3 katı olur?", options: ["4", "5", "6", "7"], correct: 1, cat: "Matematik" },
-      { text: "Bir senede kaç hafta vardır?", options: ["50", "51", "52", "53"], correct: 2, cat: "Matematik" },
-      { text: "Hangi element simgesi 'O'dur?", options: ["Altın", "Oksijen", "Gümüş", "Demir"], correct: 1, cat: "Matematik" },
-      { text: "Hangisi bir asal sayı değildir?", options: ["17", "29", "51", "53"], correct: 2, cat: "Matematik" },
-      { text: "LİMAN kelimesinden hangisi yazılamaz?", options: ["MAİL", "ALİN", "MALİ", "MANİ"], correct: 1, cat: "Sözel" },
-      { text: "Geri Sayım: 100, 93, 86, 79, ?", options: ["71", "72", "73", "74"], correct: 1, cat: "Matematik" },
-      { text: "Eğer 5 kedi 5 fareyi 5 dakikada yakalıyorsa, 100 kedi 100 fareyi kaç dakikada yakalar?", options: ["1", "5", "100", "50"], correct: 1, cat: "Mantık" },
-      { text: "Zaman : Saat :: Sıcaklık : ?", options: ["Hava", "Termometre", "Güneş", "Derece"], correct: 1, cat: "Matematik" },
-      { text: "Brazilya / Güney Amerika :: Mısır / ?", options: ["Asya", "Afrika", "Avrupa", "Okyanusya"], correct: 1, cat: "Mantık" },
-      { text: "ABC : EFG :: 123 : ?", options: ["345", "456", "567", "678"], correct: 2, cat: "Matematik" }
+        { text: "Bir gölde nilüfer çiçekleri her gün iki katına çıkar. 48 günde gölü kaplıyorsa, yarısını kaç günde kaplar?", options: ["24", "46", "47", "12"], correct: 2, cat: "Mantık" },
+        { text: "3, 6, 12, 24, ? serisini tamamlayın.", options: ["36", "48", "60", "72"], correct: 1, cat: "Matematik" },
+        { text: "121, 144, 169, 196, ?", options: ["215", "225", "256", "240"], correct: 1, cat: "Matematik" },
+        { text: "Saat 03:15'te akrep ile yelkovan arasındaki açı?", options: ["0°", "7.5°", "15°", "2.5°"], correct: 1, cat: "Matematik" },
+        { text: "Hangi sayı seriyi tamamlar? 1, 1, 2, 3, 5, 8, ?", options: ["11", "12", "13", "14"], correct: 2, cat: "Matematik" },
+        { text: "Analoji: Paradoks / Çelişki :: Analoji / ?", options: ["Benzerlik", "Farklılık", "Eş anlam", "Zıtlık"], correct: 0, cat: "Sözel" },
+        { text: "Matris:\n[ ⚫ ⚪ ] [ ⚪ ⚫ ]\n[ ⚫ ⚫ ] [ ? ]", options: ["⚪ ⚪", "⚫ ⚫", "⚫ ⚪", "⚪ ⚫"], correct: 0, cat: "Görsel" },
+        { text: "Tüm A'lar B ise, bazı B'ler A mıdır?", options: ["Kesinlikle", "Hayır", "Belki", "Bilinemez"], correct: 0, cat: "Mantık" },
+        { text: "Emek : Buğday :: Şarap : ?", options: ["Elma", "Üzüm", "Armut", "Kiraz"], correct: 1, cat: "Sözel" },
+        { text: "Dünya'nın en yüksek dağı?", options: ["Ağrı", "Everest", "K2", "Lhotse"], correct: 1, cat: "Mantık" },
+        { text: "Bir baba 34, oğlu 8 yaşında. Kaç yıl sonra babası oğlunun 3 katı olur?", options: ["4", "5", "6", "7"], correct: 1, cat: "Matematik" },
+        { text: "Bir senede kaç hafta vardır?", options: ["50", "51", "52", "53"], correct: 2, cat: "Matematik" },
+        { text: "Hangi element simgesi 'O'dur?", options: ["Altın", "Oksijen", "Gümüş", "Demir"], correct: 1, cat: "Sözel" },
+        { text: "Hangisi bir asal sayı değildir?", options: ["17", "29", "51", "53"], correct: 2, cat: "Matematik" },
+        { text: "LİMAN kelimesinden hangisi yazılamaz?", options: ["MAİL", "ALİN", "MALİ", "MANİ"], correct: 1, cat: "Sözel" },
+        { text: "Geri Sayım: 100, 93, 86, 79, ?", options: ["71", "72", "73", "74"], correct: 1, cat: "Matematik" },
+        { text: "Eğer 5 kedi 5 fareyi 5 dakikada yakalıyorsa, 100 kedi 100 fareyi kaç dakikada yakalar?", options: ["1", "5", "100", "50"], correct: 1, cat: "Mantık" },
+        { text: "Zaman : Saat :: Sıcaklık : ?", options: ["Hava", "Termometre", "Güneş", "Derece"], correct: 1, cat: "Sözel" },
+        { text: "Brazilya / Güney Amerika :: Mısır / ?", options: ["Asya", "Afrika", "Avrupa", "Okyanusya"], correct: 1, cat: "Mantık" },
+        { text: "ABC : EFG :: 123 : ?", options: ["345", "456", "567", "678"], correct: 2, cat: "Matematik" },
+        { text: "7, 10, 8, 11, 9, 12, ? serisini tamamlayın.", options: ["7", "10", "12", "13"], correct: 1, cat: "Matematik" },
+        { text: "Hangi sayı diğerlerinden farklıdır?", options: ["21", "35", "49", "62"], correct: 3, cat: "Matematik" },
+        { text: "Bir maratonda ikinciyi geçersen kaçıncı olursun?", options: ["Birinci", "İkinci", "Üçüncü", "Sonuncu"], correct: 1, cat: "Mantık" },
+        { text: "Ocak : 31 :: Şubat : ?", options: ["28/29", "30", "31", "27"], correct: 0, cat: "Matematik" },
+        { text: "Su : Buz :: Süt : ?", options: ["Yoğurt", "Peynir", "Krema", "Sıvı"], correct: 1, cat: "Sözel" },
+        { text: "Sıfat : Niteleme :: Zarf : ?", options: ["Belirtme", "Durum", "Miktar", "Zaman"], correct: 0, cat: "Sözel" },
+        { text: "15, 30, 45, 60, ?", options: ["70", "75", "80", "85"], correct: 1, cat: "Matematik" },
+        { text: "Hangisi güneş sistemindeki en büyük gezegendir?", options: ["Mars", "Venüs", "Jüpiter", "Satürn"], correct: 2, cat: "Mantık" },
+        { text: "Bir uçak Türkiye-Yunanistan sınırında düşerse, sağ kalanlar nereye gömülür?", options: ["Türkiye", "Yunanistan", "Tarafsız Bölge", "Gömülmezler"], correct: 3, cat: "Mantık" },
+        { text: "Hangi ülke Avrupa kıtasında değildir?", options: ["Almanya", "Fransa", "Japonya", "İtalya"], correct: 2, cat: "Mantık" },
+        { text: "8, 6, 9, 5, 10, 4, ?", options: ["11", "12", "3", "7"], correct: 0, cat: "Matematik" },
+        { text: "Hangi kelime diğerlerinden farklıdır?", options: ["Muz", "Elma", "Ispanak", "Armut"], correct: 2, cat: "Sözel" },
+        { text: "Kitap : Yazar :: Beste : ?", options: ["Şarkıcı", "Müzisyen", "Besteci", "Şair"], correct: 2, cat: "Sözel" },
+        { text: "Bir futbol maçı ne kadar sürer? (Normal süre)", options: ["45 dk", "60 dk", "90 dk", "120 dk"], correct: 2, cat: "Mantık" },
+        { text: "Hangi gezegen halkalarıyla tanınır?", options: ["Mars", "Jüpiter", "Satürn", "Neptün"], correct: 2, cat: "Mantık" },
+        { text: "Bir rakamın karesi 49 ise bu rakam kaçtır?", options: ["6", "7", "8", "9"], correct: 1, cat: "Matematik" },
+        { text: "Hangi renk gökkuşağında yoktur?", options: ["Kırmızı", "Yeşil", "Pembe", "Mor"], correct: 2, cat: "Görsel" },
+        { text: "Bir yıl kaç mevsimdir?", options: ["2", "3", "4", "5"], correct: 2, cat: "Matematik" },
+        { text: "Hangi organımızla nefes alırız?", options: ["Kalp", "Mide", "Akciğer", "Karaciğer"], correct: 2, cat: "Mantık" },
+        { text: "Türkiye'nin başkenti neresidir?", options: ["İstanbul", "Ankara", "İzmir", "Bursa"], correct: 1, cat: "Mantık" },
+        { text: "Bir doğru açının derecesi kaçtır?", options: ["90", "180", "270", "360"], correct: 1, cat: "Matematik" },
+        { text: "Hangi elementin simgesi 'H'dir?", options: ["Helyum", "Hidrojen", "Hafniyum", "Holmiyum"], correct: 1, cat: "Sözel" },
+        { text: "Bir üçgenin iç açıları toplamı kaçtır?", options: ["90", "180", "270", "360"], correct: 1, cat: "Matematik" },
+        { text: "Hangi hayvan memelidir?", options: ["🐟 Balık", "🐍 Yılan", "🐋 Balina", "🦅 Kartal"], correct: 2, cat: "Mantık" },
+        { text: "Hangi telefon markası 'iPhone'u üretir?", options: ["Samsung", "Apple", "Xiaomi", "Huawei"], correct: 1, cat: "Sözel" },
+        { text: "Bir saatte kaç dakika vardır?", options: ["30", "60", "90", "120"], correct: 1, cat: "Matematik" },
+        { text: "Hangi kıta en büyüktür?", options: ["Afrika", "Asya", "Avrupa", "Antarktika"], correct: 1, cat: "Mantık" },
+        { text: "Bir kilometre kaç metredir?", options: ["100", "500", "1000", "5000"], correct: 2, cat: "Matematik" },
+        { text: "Hangi meyve C vitamini bakımından zengindir?", options: ["Muz", "Elma", "Portakal", "Armut"], correct: 2, cat: "Sözel" },
+        { text: "Bir karenin kaç kenarı vardır?", options: ["3", "4", "5", "6"], correct: 1, cat: "Matematik" },
+        { text: "Hangi dil Türkiye'nin resmi dilidir?", options: ["İngilizce", "Fransızca", "Türkçe", "Almanca"], correct: 2, cat: "Sözel" },
+        { text: "Bir deste kaç tanedir?", options: ["10", "12", "15", "20"], correct: 0, cat: "Matematik" },
+        { text: "Hangi renk 'dur' işaretidir?", options: ["Yeşil", "Sarı", "Kırmızı", "Mavi"], correct: 2, cat: "Görsel" },
+        { text: "Bir düzine kaç tanedir?", options: ["10", "12", "15", "20"], correct: 1, cat: "Matematik" },
+        { text: "Hangi mevsimden sonra kış gelir?", options: ["İlkbahar", "Yaz", "Sonbahar", "Hiçbiri"], correct: 2, cat: "Mantık" },
+        { text: "Bir insanın kaç gözü vardır?", options: ["1", "2", "3", "4"], correct: 1, cat: "Mantık" },
+        { text: "Hangi yöne güneş batar?", options: ["Doğu", "Batı", "Kuzey", "Güney"], correct: 1, cat: "Mantık" },
+        { text: "Bir hafta kaç saattir?", options: ["120", "144", "168", "192"], correct: 2, cat: "Matematik" },
+        { text: "Hangi hayvan 'ormanların kralı' olarak bilinir?", options: ["🐘 Fil", "🐅 Kaplan", "🦁 Aslan", "🦒 Zürafa"], correct: 2, cat: "Sözel" },
+        { text: "Bir kilogram kaç gramdır?", options: ["100", "500", "1000", "2000"], correct: 2, cat: "Matematik" }
     ]
 };
 
-// --- Daily Quest Initialization ---
 function initDailyQuest() {
     const today = new Date().toDateString();
     const lastDate = localStorage.getItem('last_quest_date');
@@ -94,7 +137,6 @@ function initDailyQuest() {
     document.getElementById('quest-description').innerText = questText + (isDone ? " ✅" : "");
 }
 
-// --- App Navigation ---
 function startTest(mode) {
     currentState.mode = mode;
     currentState.questions = shuffleArray([...questionsDB[mode]]).slice(0, currentState.totalQuestions);
@@ -117,7 +159,6 @@ function showScreen(screenId) {
         document.getElementById(id).style.display = id === screenId ? 'block' : 'none';
     });
     
-    // Maskotu sadece test ekranı haricinde göster
     const mascot = document.querySelector('.mascot-container');
     if (mascot) {
         mascot.style.display = screenId === 'screen-test' ? 'none' : 'block';
@@ -153,10 +194,10 @@ function handleAnswer(index) {
     if (index === question.correct) {
         currentState.score++;
         currentState.categoryScores[question.cat]++;
-        updateMascot('😎'); // Success mascot
+        updateMascot('😎'); 
         if (timeTaken < 3) grantBadge('speed_demon');
     } else {
-        updateMascot('😟'); // Fail mascot
+        updateMascot('😟'); 
     }
 
     setTimeout(() => {
@@ -173,25 +214,19 @@ function handleAnswer(index) {
 
 function processResults() {
     const totalTime = (Date.now() - currentState.testStartTime) / 1000;
-    
-    // Gerçekçi IQ Hesaplama (Daha Katı Model)
-    // 20/20 Doğru + Hız = ~150 IQ | 10/20 Doğru = ~95-100 IQ
     const baseIQ = 45;
     const accuracyPoints = currentState.score * 4.5; 
     const speedBonus = Math.max(0, 15 - (totalTime / 300) * 10); 
-    
     const finalIQ = Math.round(baseIQ + accuracyPoints + speedBonus);
 
-    // Badges Check
     if (currentState.score === 20) grantBadge('perfect_score');
     if (currentState.categoryScores['Matematik'] === 5) grantBadge('math_genius');
     if (currentState.categoryScores['Mantık'] === 5) grantBadge('logic_master');
     
-    // Daily Quest check
     const questText = localStorage.getItem('daily_quest_text');
-    if (questText.includes("IQ") && finalIQ > 105) completeDailyQuest();
-    if (questText.includes("3 dakika") && totalTime < 180) completeDailyQuest();
-    if (questText.includes("Kusursuz") && currentState.score === 20) completeDailyQuest();
+    if (questText && questText.includes("IQ") && finalIQ > 105) completeDailyQuest();
+    if (questText && questText.includes("3 dakika") && totalTime < 180) completeDailyQuest();
+    if (questText && questText.includes("Kusursuz") && currentState.score === 20) completeDailyQuest();
 
     displayFinalResults(finalIQ);
 }
@@ -220,7 +255,6 @@ function displayFinalResults(iq) {
     saveToHistory(iq, rank);
 }
 
-// --- Badge Logic ---
 function grantBadge(badgeId) {
     let earned = JSON.parse(localStorage.getItem('earned_badges') || '[]');
     if (!earned.includes(badgeId)) {
@@ -258,9 +292,9 @@ function showBadgesScreen() {
     });
 }
 
-// --- Mascot & Helpers ---
 function updateMascot(icon) {
-    document.getElementById('mascot-face').innerText = icon;
+    const mascotFace = document.getElementById('mascot-face');
+    if (mascotFace) mascotFace.innerText = icon;
 }
 
 function completeDailyQuest() {
@@ -277,7 +311,9 @@ function startTimer() {
     if (currentState.timerInterval) clearInterval(currentState.timerInterval);
     currentState.timerInterval = setInterval(() => {
         const elapsed = Math.floor((Date.now() - currentState.testStartTime) / 1000);
-        timerEl.innerText = `⏱️ ${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
+        if (timerEl) {
+            timerEl.innerText = `⏱️ ${Math.floor(elapsed/60).toString().padStart(2,'0')}:${(elapsed%60).toString().padStart(2,'0')}`;
+        }
     }, 1000);
 }
 
@@ -298,5 +334,4 @@ function saveToHistory(iq, rank) {
 function viewHistory() { window.open('history.html', '_blank'); }
 function restart() { initDailyQuest(); showScreen('screen-welcome'); updateMascot('🦊'); }
 
-// Init
 window.onload = initDailyQuest;
