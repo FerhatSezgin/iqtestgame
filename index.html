@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>IQ Test Pro - Her Yaş İçin Eğlenceli Zeka Testi</title>
+    <meta name="description" content="Çocuklar ve yetişkinler için özel tasarlanmış, mobil uyumlu IQ testi uygulaması.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="app-container" id="app">
+        <!-- İçerik JavaScript ile dinamik olarak değişecek -->
+        <div class="glass-card">
+            <h1>IQ Test Pro</h1>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+                Potansiyelini keşfetmeye hazır mısın? Yaş grubunu seç ve teste başla!
+            </p>
+            
+            <div id="screen-welcome">
+                <button class="btn btn-primary" onclick="startTest('kids')">👦 Çocuk Modu (5-12 Yaş)</button>
+                <button class="btn btn-primary" onclick="startTest('adults')">👨‍💼 Yetişkin Modu (13+ Yaş)</button>
+                <button class="btn btn-secondary" onclick="viewHistory()">📊 Geçmiş Skorlarım</button>
+            </div>
+
+            <div id="screen-test" style="display: none;">
+                <div class="question-header">
+                    <div class="progress-bar">
+                        <div class="progress-inner" id="progress"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.9rem;">
+                        <span id="question-number">Soru 1/15</span>
+                        <span id="timer">⏱️ 00:00</span>
+                    </div>
+                </div>
+                
+                <div id="question-container">
+                    <!-- Soru ve seçenekler buraya gelecek -->
+                </div>
+            </div>
+
+            <div id="screen-results" style="display: none;">
+                <h2 style="text-align: center; margin-bottom: 1rem;">Test Tamamlandı!</h2>
+                <div class="result-score" id="iq-score">120</div>
+                <p id="result-text" style="text-align: center; margin-bottom: 2rem;"></p>
+                <button class="btn btn-primary" onclick="restart()">Tekrar Dene</button>
+                <button class="btn btn-secondary" onclick="viewHistory()">Gelişimimi Gör</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
