@@ -116,6 +116,12 @@ function showScreen(screenId) {
     ['screen-welcome', 'screen-test', 'screen-confirmation', 'screen-results', 'screen-badges'].forEach(id => {
         document.getElementById(id).style.display = id === screenId ? 'block' : 'none';
     });
+    
+    // Maskotu sadece test ekranı haricinde göster
+    const mascot = document.querySelector('.mascot-container');
+    if (mascot) {
+        mascot.style.display = screenId === 'screen-test' ? 'none' : 'block';
+    }
 }
 
 function renderQuestion() {
@@ -167,10 +173,14 @@ function handleAnswer(index) {
 
 function processResults() {
     const totalTime = (Date.now() - currentState.testStartTime) / 1000;
-    const baseIQ = currentState.mode === 'kids' ? 88 : 78;
-    const accuracy = (currentState.score / currentState.totalQuestions) * 85;
-    const speedBonus = Math.max(0, 20 - (totalTime / 300) * 10);
-    const finalIQ = Math.round(baseIQ + accuracy + speedBonus);
+    
+    // Gerçekçi IQ Hesaplama (Daha Katı Model)
+    // 20/20 Doğru + Hız = ~150 IQ | 10/20 Doğru = ~95-100 IQ
+    const baseIQ = 45;
+    const accuracyPoints = currentState.score * 4.5; 
+    const speedBonus = Math.max(0, 15 - (totalTime / 300) * 10); 
+    
+    const finalIQ = Math.round(baseIQ + accuracyPoints + speedBonus);
 
     // Badges Check
     if (currentState.score === 20) grantBadge('perfect_score');
@@ -225,7 +235,7 @@ function renderEarnedBadges() {
     container.innerHTML = currentState.earnedBadges.length > 0 ? '<p style="font-size: 0.8rem; width: 100%; margin-bottom: 0.5rem;">Bu testte kazandığın rozetler:</p>' : '';
     currentState.earnedBadges.forEach(id => {
         const badge = ALL_BADGES.find(b => b.id === id);
-        container.innerHTML += `<div class="badge-item earned" title="${badge.name}: ${badge.desc}">${badge.icon}</div>`;
+        container.innerHTML += `<div class="badge-compact" title="${badge.name}: ${badge.desc}">${badge.icon}</div>`;
     });
 }
 
@@ -236,7 +246,15 @@ function showBadgesScreen() {
     container.innerHTML = '';
     ALL_BADGES.forEach(badge => {
         const isEarned = earned.includes(badge.id);
-        container.innerHTML += `<div class="badge-item ${isEarned ? 'earned' : ''}" title="${badge.name}: ${badge.desc}">${badge.icon}</div>`;
+        container.innerHTML += `
+            <div class="badge-item ${isEarned ? 'earned' : ''}">
+                <div class="badge-icon">${badge.icon}</div>
+                <div class="badge-info">
+                    <span class="badge-name">${badge.name} ${isEarned ? '✅' : '🔒'}</span>
+                    <span class="badge-desc">${badge.desc}</span>
+                </div>
+            </div>
+        `;
     });
 }
 
