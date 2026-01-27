@@ -7,7 +7,7 @@ let currentState = {
     startTime: null,
     timerInterval: null,
     questions: [],
-    totalQuestions: 20,
+    totalQuestions: 15,
     categoryScores: { Mantık: 0, Matematik: 0, Görsel: 0, Sözel: 0 },
     categoryTotal: { Mantık: 0, Matematik: 0, Görsel: 0, Sözel: 0 },
     testStartTime: null,
@@ -61,66 +61,26 @@ const questionsDB = {
         { text: "Yağmur nereden yağar?", options: ["Toprak", "Deniz", "Bulut", "Güneş"], correct: 2, cat: "Mantık" }
     ],
     adults: [
-        { text: "Bir gölde nilüfer çiçekleri her gün iki katına çıkar. 48 günde gölü kaplıyorsa, yarısını kaç günde kaplar?", options: ["24", "46", "47", "12"], correct: 2, cat: "Mantık" },
-        { text: "3, 6, 12, 24, ? serisini tamamlayın.", options: ["36", "48", "60", "72"], correct: 1, cat: "Matematik" },
-        { text: "121, 144, 169, 196, ?", options: ["215", "225", "256", "240"], correct: 1, cat: "Matematik" },
-        { text: "Saat 03:15'te akrep ile yelkovan arasındaki açı?", options: ["0°", "7.5°", "15°", "2.5°"], correct: 1, cat: "Matematik" },
-        { text: "Hangi sayı seriyi tamamlar? 1, 1, 2, 3, 5, 8, ?", options: ["11", "12", "13", "14"], correct: 2, cat: "Matematik" },
-        { text: "Analoji: Paradoks / Çelişki :: Analoji / ?", options: ["Benzerlik", "Farklılık", "Eş anlam", "Zıtlık"], correct: 0, cat: "Sözel" },
-        { text: "Matris:\n[ ⚫ ⚪ ] [ ⚪ ⚫ ]\n[ ⚫ ⚫ ] [ ? ]", options: ["⚪ ⚪", "⚫ ⚫", "⚫ ⚪", "⚪ ⚫"], correct: 0, cat: "Görsel" },
-        { text: "Tüm A'lar B ise, bazı B'ler A mıdır?", options: ["Kesinlikle", "Hayır", "Belki", "Bilinemez"], correct: 0, cat: "Mantık" },
-        { text: "Emek : Buğday :: Şarap : ?", options: ["Elma", "Üzüm", "Armut", "Kiraz"], correct: 1, cat: "Sözel" },
-        { text: "Dünya'nın en yüksek dağı?", options: ["Ağrı", "Everest", "K2", "Lhotse"], correct: 1, cat: "Mantık" },
-        { text: "Bir baba 34, oğlu 8 yaşında. Kaç yıl sonra babası oğlunun 3 katı olur?", options: ["4", "5", "6", "7"], correct: 1, cat: "Matematik" },
-        { text: "Bir senede kaç hafta vardır?", options: ["50", "51", "52", "53"], correct: 2, cat: "Matematik" },
-        { text: "Hangi element simgesi 'O'dur?", options: ["Altın", "Oksijen", "Gümüş", "Demir"], correct: 1, cat: "Sözel" },
-        { text: "Hangisi bir asal sayı değildir?", options: ["17", "29", "51", "53"], correct: 2, cat: "Matematik" },
-        { text: "LİMAN kelimesinden hangisi yazılamaz?", options: ["MAİL", "ALİN", "MALİ", "MANİ"], correct: 1, cat: "Sözel" },
-        { text: "Geri Sayım: 100, 93, 86, 79, ?", options: ["71", "72", "73", "74"], correct: 1, cat: "Matematik" },
-        { text: "Eğer 5 kedi 5 fareyi 5 dakikada yakalıyorsa, 100 kedi 100 fareyi kaç dakikada yakalar?", options: ["1", "5", "100", "50"], correct: 1, cat: "Mantık" },
-        { text: "Zaman : Saat :: Sıcaklık : ?", options: ["Hava", "Termometre", "Güneş", "Derece"], correct: 1, cat: "Sözel" },
-        { text: "Brazilya / Güney Amerika :: Mısır / ?", options: ["Asya", "Afrika", "Avrupa", "Okyanusya"], correct: 1, cat: "Mantık" },
-        { text: "ABC : EFG :: 123 : ?", options: ["345", "456", "567", "678"], correct: 2, cat: "Matematik" },
-        { text: "7, 10, 8, 11, 9, 12, ? serisini tamamlayın.", options: ["7", "10", "12", "13"], correct: 1, cat: "Matematik" },
-        { text: "Hangi sayı diğerlerinden farklıdır?", options: ["21", "35", "49", "62"], correct: 3, cat: "Matematik" },
-        { text: "Bir maratonda ikinciyi geçersen kaçıncı olursun?", options: ["Birinci", "İkinci", "Üçüncü", "Sonuncu"], correct: 1, cat: "Mantık" },
-        { text: "Ocak : 31 :: Şubat : ?", options: ["28/29", "30", "31", "27"], correct: 0, cat: "Matematik" },
-        { text: "Su : Buz :: Süt : ?", options: ["Yoğurt", "Peynir", "Krema", "Sıvı"], correct: 1, cat: "Sözel" },
-        { text: "Sıfat : Niteleme :: Zarf : ?", options: ["Belirtme", "Durum", "Miktar", "Zaman"], correct: 0, cat: "Sözel" },
-        { text: "15, 30, 45, 60, ?", options: ["70", "75", "80", "85"], correct: 1, cat: "Matematik" },
-        { text: "Hangisi güneş sistemindeki en büyük gezegendir?", options: ["Mars", "Venüs", "Jüpiter", "Satürn"], correct: 2, cat: "Mantık" },
-        { text: "Bir uçak Türkiye-Yunanistan sınırında düşerse, sağ kalanlar nereye gömülür?", options: ["Türkiye", "Yunanistan", "Tarafsız Bölge", "Gömülmezler"], correct: 3, cat: "Mantık" },
-        { text: "Hangi ülke Avrupa kıtasında değildir?", options: ["Almanya", "Fransa", "Japonya", "İtalya"], correct: 2, cat: "Mantık" },
-        { text: "8, 6, 9, 5, 10, 4, ?", options: ["11", "12", "3", "7"], correct: 0, cat: "Matematik" },
-        { text: "Hangi kelime diğerlerinden farklıdır?", options: ["Muz", "Elma", "Ispanak", "Armut"], correct: 2, cat: "Sözel" },
-        { text: "Kitap : Yazar :: Beste : ?", options: ["Şarkıcı", "Müzisyen", "Besteci", "Şair"], correct: 2, cat: "Sözel" },
-        { text: "Bir futbol maçı ne kadar sürer? (Normal süre)", options: ["45 dk", "60 dk", "90 dk", "120 dk"], correct: 2, cat: "Mantık" },
-        { text: "Hangi gezegen halkalarıyla tanınır?", options: ["Mars", "Jüpiter", "Satürn", "Neptün"], correct: 2, cat: "Mantık" },
-        { text: "Bir rakamın karesi 49 ise bu rakam kaçtır?", options: ["6", "7", "8", "9"], correct: 1, cat: "Matematik" },
-        { text: "Hangi renk gökkuşağında yoktur?", options: ["Kırmızı", "Yeşil", "Pembe", "Mor"], correct: 2, cat: "Görsel" },
-        { text: "Bir yıl kaç mevsimdir?", options: ["2", "3", "4", "5"], correct: 2, cat: "Matematik" },
-        { text: "Hangi organımızla nefes alırız?", options: ["Kalp", "Mide", "Akciğer", "Karaciğer"], correct: 2, cat: "Mantık" },
-        { text: "Türkiye'nin başkenti neresidir?", options: ["İstanbul", "Ankara", "İzmir", "Bursa"], correct: 1, cat: "Mantık" },
-        { text: "Bir doğru açının derecesi kaçtır?", options: ["90", "180", "270", "360"], correct: 1, cat: "Matematik" },
-        { text: "Hangi elementin simgesi 'H'dir?", options: ["Helyum", "Hidrojen", "Hafniyum", "Holmiyum"], correct: 1, cat: "Sözel" },
-        { text: "Bir üçgenin iç açıları toplamı kaçtır?", options: ["90", "180", "270", "360"], correct: 1, cat: "Matematik" },
-        { text: "Hangi hayvan memelidir?", options: ["🐟 Balık", "🐍 Yılan", "🐋 Balina", "🦅 Kartal"], correct: 2, cat: "Mantık" },
-        { text: "Hangi telefon markası 'iPhone'u üretir?", options: ["Samsung", "Apple", "Xiaomi", "Huawei"], correct: 1, cat: "Sözel" },
-        { text: "Bir saatte kaç dakika vardır?", options: ["30", "60", "90", "120"], correct: 1, cat: "Matematik" },
-        { text: "Hangi kıta en büyüktür?", options: ["Afrika", "Asya", "Avrupa", "Antarktika"], correct: 1, cat: "Mantık" },
-        { text: "Bir kilometre kaç metredir?", options: ["100", "500", "1000", "5000"], correct: 2, cat: "Matematik" },
-        { text: "Hangi meyve C vitamini bakımından zengindir?", options: ["Muz", "Elma", "Portakal", "Armut"], correct: 2, cat: "Sözel" },
-        { text: "Bir karenin kaç kenarı vardır?", options: ["3", "4", "5", "6"], correct: 1, cat: "Matematik" },
-        { text: "Hangi dil Türkiye'nin resmi dilidir?", options: ["İngilizce", "Fransızca", "Türkçe", "Almanca"], correct: 2, cat: "Sözel" },
-        { text: "Bir deste kaç tanedir?", options: ["10", "12", "15", "20"], correct: 0, cat: "Matematik" },
-        { text: "Hangi renk 'dur' işaretidir?", options: ["Yeşil", "Sarı", "Kırmızı", "Mavi"], correct: 2, cat: "Görsel" },
-        { text: "Bir düzine kaç tanedir?", options: ["10", "12", "15", "20"], correct: 1, cat: "Matematik" },
-        { text: "Hangi mevsimden sonra kış gelir?", options: ["İlkbahar", "Yaz", "Sonbahar", "Hiçbiri"], correct: 2, cat: "Mantık" },
-        { text: "Bir insanın kaç gözü vardır?", options: ["1", "2", "3", "4"], correct: 1, cat: "Mantık" },
-        { text: "Hangi yöne güneş batar?", options: ["Doğu", "Batı", "Kuzey", "Güney"], correct: 1, cat: "Mantık" },
-        { text: "Bir hafta kaç saattir?", options: ["120", "144", "168", "192"], correct: 2, cat: "Matematik" },
-        { text: "Hangi hayvan 'ormanların kralı' olarak bilinir?", options: ["🐘 Fil", "🐅 Kaplan", "🦁 Aslan", "🦒 Zürafa"], correct: 2, cat: "Sözel" },
-        { text: "Bir kilogram kaç gramdır?", options: ["100", "500", "1000", "2000"], correct: 2, cat: "Matematik" }
+        { text: "Hangi sayı seriyi tamamlar?\n2, 5, 12, 27, 58, ?", options: ["116", "121", "125", "119"], correct: 1, cat: "Matematik" },
+        { text: "Eğer bir yalan makinesi her zaman yalan söylüyorsa ve 'Ben her zaman yalan söylerim' diyorsa, bu durum nedir?", options: ["Doğrudur", "Yalandır", "Mantıksal Paradoks", "Anlamsızdır"], correct: 2, cat: "Mantık" },
+        { text: "Piyano : Tuş :: Göz : ?", options: ["Görme", "Retina", "Gözlük", "Işık"], correct: 1, cat: "Sözel" },
+        { text: "Matris Tamamlama:\n[ ⏫ ⏫ ] -> [ ⏬ ⏬ ]\n[ ⏩ ⏪ ] -> [ ? ]", options: ["⏪ ⏩", "⏩ ⏩", "⏪ ⏪", "⏫ ⏬"], correct: 0, cat: "Görsel" },
+        { text: "Bir adamın 3 kızı var, her kızın bir erkek kardeşi var. Adamın kaç çocuğu var?", options: ["3", "4", "6", "7"], correct: 1, cat: "Mantık" },
+        { text: "Su : H2O :: Amonyak : ?", options: ["NH3", "CO2", "CH4", "NaCl"], correct: 0, cat: "Sözel" },
+        { text: "Hangi sayı diğerlerinden yapısal olarak farklıdır?", options: ["81", "64", "49", "35"], correct: 3, cat: "Matematik" },
+        { text: "Zaman : Entropi :: Hayat : ?", options: ["Biyoloji", "Enerji", "Evrim", "Doğum"], correct: 2, cat: "Sözel" },
+        { text: "Bir küpün tüm yüzeylerini boyamak için 6 litre boya gerekiyorsa, her bir kenarı 2 katına çıkarılan bir küp için kaç litre gerekir?", options: ["12", "18", "24", "48"], correct: 2, cat: "Matematik" },
+        { text: "Eğer bugün günlerden Pazartesi ise, 100 gün sonra hangi gün olur?", options: ["Salı", "Çarşamba", "Perşembe", "Cuma"], correct: 1, cat: "Matematik" },
+        { text: "Görsel Mantık: Altıgenin içindeki üçgen 180 derece dönerse hangisi oluşur?\n⬢(▲) -> ?", options: ["⬢(▼)", "⬢(▲)", "⬡(▼)", "⬢(◀)"], correct: 0, cat: "Görsel" },
+        { text: "Hangi kelime grubun dışında kalır?", options: ["Epistemoloji", "Ontoloji", "Etik", "Stetoskop"], correct: 3, cat: "Sözel" },
+        { text: "Bir yarışta sondan ikinciyi geçerseniz kaçıncı olursunuz?", options: ["Birinci", "İkinci", "Sondan İkinci", "Sondan Üçüncü"], correct: 2, cat: "Mantık" },
+        { text: "X = 3, Y = 5 ise; (X*Y) + (Y/X) işleminin tam sayı kısmı nedir?", options: ["15", "16", "17", "18"], correct: 1, cat: "Matematik" },
+        { text: "Hangisi bir 'Kardinal' sayıdır?", options: ["Birinci", "İkinci", "Bir", "Yarım"], correct: 2, cat: "Sözel" },
+        { text: "9 (Dokuz) harfinde kaç kapalı döngü vardır?", options: ["0", "1", "2", "3"], correct: 1, cat: "Görsel" },
+        { text: "Simetri: 'MUM' kelimesinin dikey aynadaki hali nedir?", options: ["WNW", "MUM", "UNU", "NUN"], correct: 1, cat: "Görsel" },
+        { text: "Aristo : Mantık :: Newton : ?", options: ["Biyoloji", "Fizik", "Sanat", "Kimya"], correct: 1, cat: "Sözel" },
+        { text: "Hangi sayı seriyi bozar?\n1, 3, 6, 10, 15, 22, 28", options: ["10", "15", "22", "28"], correct: 2, cat: "Matematik" },
+        { text: "Bir uçak kuzeye uçarken rüzgar batıdan esiyorsa, uçağın burnu nereye bakmalıdır?", options: ["Kuzey", "Kuzey-Batı", "Kuzey-Doğu", "Batı"], correct: 1, cat: "Mantık" }
     ]
 };
 
@@ -218,12 +178,12 @@ function handleAnswer(index) {
 
 function processResults() {
     const totalTime = (Date.now() - currentState.testStartTime) / 1000;
-    const baseIQ = 45;
-    const accuracyPoints = currentState.score * 4.5; 
-    const speedBonus = Math.max(0, 15 - (totalTime / 300) * 10); 
+    const baseIQ = 50; // Biraz daha yüksek başlangıç
+    const accuracyPoints = currentState.score * 6.5; // 15 soruya göre (15 * 6.5 ≈ 97.5)
+    const speedBonus = Math.max(0, 20 - (totalTime / 240) * 15); // Daha sert süre bonusu
     const finalIQ = Math.round(baseIQ + accuracyPoints + speedBonus);
 
-    if (currentState.score === 20) grantBadge('perfect_score');
+    if (currentState.score === currentState.totalQuestions) grantBadge('perfect_score');
     if (currentState.categoryScores['Matematik'] === 5) grantBadge('math_genius');
     if (currentState.categoryScores['Mantık'] === 5) grantBadge('logic_master');
     
@@ -238,7 +198,7 @@ function processResults() {
 }
 
 function calculateXP(iq, correctAnswers) {
-    const earnedXP = Math.round((iq * 2) + (correctAnswers * 50));
+    const earnedXP = Math.round((iq * 2.5) + (correctAnswers * 70));
     currentState.xp += earnedXP;
     
     // Basit level sistemi: Her level için 1000 XP
