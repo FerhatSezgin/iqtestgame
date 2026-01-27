@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>IQ Test Pro Elite - Profesyonel Zeka Ölçümü</title>
-    <meta name="description" content="Profesyonel, bilimsel tabanlı ve her yaşa uygun açık tema IQ testi.">
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
@@ -16,18 +14,12 @@
         <div class="glass-card">
             <div id="screen-welcome">
                 <h1>IQ Test Pro</h1>
-                <p class="subtitle">Potansiyelini modern ve bilimsel bir testle keşfet. Başlamak için yaş grubunu seç.</p>
+                <p class="subtitle">Profesyonel seviyede, bilimsel tabanlı zeka ölçümü. IQ skorunu ve rütbeni öğren.</p>
                 
                 <div style="display: grid; gap: 1rem;">
-                    <button class="btn btn-primary" onclick="startTest('kids')">
-                        <span>👦</span> Çocuk Modu (5-12 Yaş)
-                    </button>
-                    <button class="btn btn-primary" onclick="startTest('adults')">
-                        <span>👨‍💼</span> Yetişkin Modu (13+ Yaş)
-                    </button>
-                    <button class="btn btn-secondary" onclick="viewHistory()">
-                        <span>📊</span> Geçmiş Skorlarım
-                    </button>
+                    <button class="btn btn-primary" onclick="startTest('kids')">👦 Çocuk Modu (5-12 Yaş)</button>
+                    <button class="btn btn-primary" onclick="startTest('adults')">👨‍💼 Yetişkin Modu (13+ Yaş)</button>
+                    <button class="btn btn-secondary" onclick="viewHistory()">📊 Geçmiş Skorlarım</button>
                 </div>
             </div>
 
@@ -36,29 +28,43 @@
                     <div class="progress-bar">
                         <div class="progress-inner" id="progress"></div>
                     </div>
-                    <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.95rem; color: var(--text-muted);">
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.95rem; color: var(--text-muted);">
                         <span id="question-number">Soru 1/20</span>
                         <span id="timer">⏱️ 00:00</span>
                     </div>
                 </div>
                 
                 <div id="question-container">
-                    <!-- Soru içeriği JavaScript ile buraya gelecek -->
+                    <!-- Dinamik İçerik -->
                 </div>
             </div>
 
+            <div id="screen-confirmation" style="display: none; text-align: center;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">🎯</div>
+                <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">Test Tamamlandı!</h2>
+                <p class="subtitle">Tüm soruları yanıtladın. Verilerini analiz etmeye ve rütbeni belirlemeye hazır mısın?</p>
+                <button class="btn btn-primary" onclick="processResults()">Sonuçları Gör</button>
+            </div>
+
             <div id="screen-results" style="display: none;">
-                <h2 style="text-align: center; font-size: 2rem; font-weight: 800;">Test Analiz Raporu</h2>
-                <div class="result-score" id="iq-score">120</div>
+                <div style="text-align: center;">
+                    <div id="result-rank" class="rank-badge">Zihin Kaşifi</div>
+                    <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-muted);">IQ Skorunuz:</h2>
+                    <div class="result-score" id="iq-score">120</div>
+                </div>
+
+                <div class="ability-section">
+                    <p style="font-weight: 800; margin-bottom: 1rem; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Yetenek Analizi</p>
+                    <div id="ability-bars">
+                        <!-- Yetenek barları dinamik gelecek -->
+                    </div>
+                </div>
+
                 <p id="result-text" class="subtitle" style="margin-bottom: 2rem;"></p>
                 
                 <div style="display: grid; gap: 1rem;">
-                    <button class="btn btn-primary" onclick="restart()">
-                        <span>🔄</span> Yeniden Başlat
-                    </button>
-                    <button class="btn btn-secondary" onclick="viewHistory()">
-                        <span>📈</span> Gelişim Grafiğini Gör
-                    </button>
+                    <button class="btn btn-primary" onclick="restart()">🔄 Tekrar dene</button>
+                    <button class="btn btn-secondary" onclick="viewHistory()">📈 Gelişimimi Gör</button>
                 </div>
             </div>
         </div>

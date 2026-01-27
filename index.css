@@ -59,6 +59,12 @@ body {
   transition: transform 0.3s ease;
   position: relative;
   overflow: hidden;
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .glass-card::before {
@@ -164,33 +170,53 @@ h1 {
 .visual-container {
   background: #f1f5f9;
   border-radius: 20px;
-  padding: 1.5rem;
+  padding: 2rem;
   margin-bottom: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 150px;
+  min-height: 200px;
 }
 
 .visual-pattern {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 15px;
 }
 
 .pattern-box {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   background: white;
-  border-radius: 10px;
+  border-radius: 12px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 1.5rem;
-  box-shadow: var(--shadow-sm);
+  font-size: 2rem;
+  box-shadow: var(--shadow-md);
+  border: 2px solid transparent;
+  transition: border-color 0.2s;
 }
 
-/* Results */
+.pattern-box.selected {
+    border-color: var(--primary);
+}
+
+/* Results & Badges */
+.rank-badge {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border-radius: 99px;
+    font-weight: 700;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
 .result-score {
   font-size: 5rem;
   font-weight: 900;
@@ -199,7 +225,43 @@ h1 {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  margin: 1.5rem 0;
+  margin: 0.5rem 0;
+}
+
+/* Ability Bars */
+.ability-section {
+    margin: 2rem 0;
+    background: #f8fafc;
+    padding: 1.5rem;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+}
+
+.ability-item {
+    margin-bottom: 1rem;
+}
+
+.ability-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+}
+
+.ability-bar {
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.ability-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: 3px;
+    transition: width 1s ease-out;
 }
 
 /* Mobile */
@@ -213,5 +275,13 @@ h1 {
   }
   h1 {
     font-size: 2.25rem;
+  }
+  .visual-pattern {
+    gap: 8px;
+  }
+  .pattern-box {
+    width: 45px;
+    height: 45px;
+    font-size: 1.4rem;
   }
 }
