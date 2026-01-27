@@ -12,14 +12,30 @@
 <body>
     <div class="app-container" id="app">
         <div class="glass-card">
+            <!-- Motivasyon Maskotu -->
+            <div class="mascot-container">
+                <div class="mascot" id="mascot-face">🦊</div>
+            </div>
+
             <div id="screen-welcome">
                 <h1>IQ Test Pro</h1>
-                <p class="subtitle">Profesyonel seviyede, bilimsel tabanlı zeka ölçümü. IQ skorunu ve rütbeni öğren.</p>
+                
+                <!-- Günlük Görev -->
+                <div class="daily-quest" id="daily-quest">
+                    <div class="quest-icon">⚡</div>
+                    <div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Günlük Görev</div>
+                        <div class="quest-text" id="quest-description">Bugün 105 IQ puanını aş!</div>
+                    </div>
+                </div>
+
+                <p class="subtitle">Zekanı bilimsel metodlarla ölç, rütbeni yükselt ve rozetleri topla!</p>
                 
                 <div style="display: grid; gap: 1rem;">
                     <button class="btn btn-primary" onclick="startTest('kids')">👦 Çocuk Modu (5-12 Yaş)</button>
                     <button class="btn btn-primary" onclick="startTest('adults')">👨‍💼 Yetişkin Modu (13+ Yaş)</button>
                     <button class="btn btn-secondary" onclick="viewHistory()">📊 Geçmiş Skorlarım</button>
+                    <button class="btn btn-secondary" onclick="showBadgesScreen()">🏅 Başarımlarım (Rozetler)</button>
                 </div>
             </div>
 
@@ -35,15 +51,15 @@
                 </div>
                 
                 <div id="question-container">
-                    <!-- Dinamik İçerik -->
+                    <!-- Soru içeriği JavaScript ile dolacak -->
                 </div>
             </div>
 
             <div id="screen-confirmation" style="display: none; text-align: center;">
                 <div style="font-size: 4rem; margin-bottom: 1rem;">🎯</div>
                 <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">Test Tamamlandı!</h2>
-                <p class="subtitle">Tüm soruları yanıtladın. Verilerini analiz etmeye ve rütbeni belirlemeye hazır mısın?</p>
-                <button class="btn btn-primary" onclick="processResults()">Sonuçları Gör</button>
+                <p class="subtitle">Üstün bir çaba gösterdin! Verilerini derinlemesine analiz etmeye hazır mısın?</p>
+                <button class="btn btn-primary" onclick="processResults()">Sonuçları Analiz Et</button>
             </div>
 
             <div id="screen-results" style="display: none;">
@@ -51,21 +67,31 @@
                     <div id="result-rank" class="rank-badge">Zihin Kaşifi</div>
                     <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-muted);">IQ Skorunuz:</h2>
                     <div class="result-score" id="iq-score">120</div>
+                    
+                    <div id="earned-badges-session" class="badges-container" style="margin-top: 1rem;">
+                        <!-- Testten hemen sonra kazanılan rozetler -->
+                    </div>
                 </div>
 
                 <div class="ability-section">
                     <p style="font-weight: 800; margin-bottom: 1rem; color: var(--text); border-bottom: 1px solid var(--border); padding-bottom: 0.5rem;">Yetenek Analizi</p>
-                    <div id="ability-bars">
-                        <!-- Yetenek barları dinamik gelecek -->
-                    </div>
+                    <div id="ability-bars"></div>
                 </div>
 
                 <p id="result-text" class="subtitle" style="margin-bottom: 2rem;"></p>
                 
-                <div style="display: grid; gap: 1rem;">
+                <div style="display: grid; gap: 0.8rem;">
                     <button class="btn btn-primary" onclick="restart()">🔄 Tekrar dene</button>
-                    <button class="btn btn-secondary" onclick="viewHistory()">📈 Gelişimimi Gör</button>
+                    <button class="btn btn-secondary" onclick="viewHistory()">📈 Gelişim Grafiğini Gör</button>
                 </div>
+            </div>
+
+            <div id="screen-badges" style="display: none;">
+                <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 1.5rem;">🏅 Başarımlarım</h2>
+                <div id="full-badges-list" class="badges-container">
+                    <!-- Tüm rozetler burada listelenecek -->
+                </div>
+                <button class="btn btn-secondary" onclick="restart()" style="margin-top: 1.5rem;">Ana Sayfaya Dön</button>
             </div>
         </div>
     </div>

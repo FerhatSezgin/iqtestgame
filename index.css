@@ -11,26 +11,19 @@
   --success: #10b981;
   --accent: #f59e0b;
   
-  /* Shadow & Depth */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-elite: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
 }
 
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+  margin: 0; padding: 0; box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  font-family: 'Outfit', 'Inter', sans-serif;
+  font-family: 'Outfit', sans-serif;
   background-color: var(--background);
-  background-image: 
-    radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(168, 85, 247, 0.05) 0px, transparent 50%);
   color: var(--text);
   min-height: 100vh;
   display: flex;
@@ -40,248 +33,118 @@ body {
 }
 
 .app-container {
-  width: 100%;
-  max-width: 550px;
-  min-height: 100vh;
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  width: 100%; max-width: 550px; padding: 1.5rem;
 }
 
-/* Premium Card */
 .glass-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 32px;
   padding: 2.5rem;
   box-shadow: var(--shadow-elite);
-  transition: transform 0.3s ease;
   position: relative;
   overflow: hidden;
-  animation: fadeIn 0.5s ease-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .glass-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 6px;
   background: linear-gradient(90deg, var(--primary), var(--secondary));
 }
 
-h1 {
-  font-size: 2.75rem;
-  font-weight: 800;
-  color: var(--text);
-  text-align: center;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.02em;
-}
-
-.subtitle {
-  text-align: center;
-  color: var(--text-muted);
-  margin-bottom: 2.5rem;
-  font-size: 1.1rem;
-}
+h1 { font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem; }
+.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 2rem; }
 
 .btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  width: 100%;
-  padding: 1.1rem;
-  border: none;
-  border-radius: 20px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  margin-bottom: 1rem;
-  box-shadow: var(--shadow-sm);
+  display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+  width: 100%; padding: 1.1rem; border: none; border-radius: 20px;
+  font-size: 1.1rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; margin-bottom: 1rem;
 }
+.btn-primary { background: var(--primary); color: white; }
+.btn-primary:active { transform: scale(0.98); }
+.btn-secondary { background: var(--background); border: 1px solid var(--border); color: var(--text); }
 
-.btn-primary {
-  background: var(--primary);
-  color: white;
-}
-
-.btn-primary:hover {
-  background: #4f46e5;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
-}
-
-.btn-secondary {
-  background: var(--background);
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-
-.btn-secondary:hover {
-  background: white;
-  border-color: var(--primary-light);
-  color: var(--primary);
-}
-
-/* Question Layout */
-.question-header {
-  margin-bottom: 2.5rem;
-}
-
-.progress-bar {
-  height: 10px;
-  background: var(--border);
-  border-radius: 10px;
-  margin-bottom: 1.25rem;
-  overflow: hidden;
-}
-
-.progress-inner {
-  height: 100%;
-  background: linear-gradient(90deg, var(--primary), var(--secondary));
-  width: 0%;
-  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.question-text {
-  font-size: 1.4rem;
-  font-weight: 700;
-  line-height: 1.4;
-  margin-bottom: 2rem;
-  color: var(--text);
-}
-
-.option-grid {
-  display: grid;
-  gap: 1rem;
-}
-
-/* Visual Questions Support */
-.visual-container {
-  background: #f1f5f9;
-  border-radius: 20px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-}
-
-.visual-pattern {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.pattern-box {
-  width: 60px;
-  height: 60px;
-  background: white;
-  border-radius: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 2rem;
-  box-shadow: var(--shadow-md);
-  border: 2px solid transparent;
-  transition: border-color 0.2s;
-}
-
-.pattern-box.selected {
-    border-color: var(--primary);
-}
-
-/* Results & Badges */
-.rank-badge {
-    display: inline-block;
-    padding: 0.5rem 1.25rem;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    border-radius: 99px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-}
-
-.result-score {
-  font-size: 5rem;
-  font-weight: 900;
-  text-align: center;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin: 0.5rem 0;
-}
-
-/* Ability Bars */
-.ability-section {
-    margin: 2rem 0;
-    background: #f8fafc;
-    padding: 1.5rem;
-    border-radius: 24px;
-    border: 1px solid var(--border);
-}
-
-.ability-item {
-    margin-bottom: 1rem;
-}
-
-.ability-label {
+/* --- Daily Quest --- */
+.daily-quest {
+    background: #eef2ff;
+    border: 1px solid var(--primary-light);
+    border-radius: 16px;
+    padding: 1rem;
+    margin-bottom: 2rem;
     display: flex;
-    justify-content: space-between;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--text-muted);
-    margin-bottom: 0.4rem;
+    align-items: center;
+    gap: 1rem;
+}
+.quest-icon { font-size: 1.5rem; background: white; border-radius: 50%; padding: 0.5rem; box-shadow: var(--shadow-sm); }
+.quest-text { font-size: 0.9rem; font-weight: 600; color: var(--primary); }
+
+/* --- Mascot --- */
+.mascot-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    pointer-events: none;
+}
+.mascot {
+    font-size: 2.5rem;
+    animation: float 3s ease-in-out infinite;
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
 }
 
-.ability-bar {
-    height: 6px;
-    background: #e2e8f0;
-    border-radius: 3px;
-    overflow: hidden;
+/* --- Badges --- */
+.badges-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.badge-item {
+    width: 45px; height: 45px;
+    background: #f1f5f9;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    filter: grayscale(1);
+    opacity: 0.5;
+    transition: all 0.5s;
+    cursor: help;
+}
+.badge-item.earned {
+    filter: grayscale(0);
+    opacity: 1;
+    background: #f7fee7;
+    border: 2px solid #84cc16;
 }
 
-.ability-fill {
-    height: 100%;
-    background: var(--primary);
-    border-radius: 3px;
-    transition: width 1s ease-out;
+/* --- Ability & Rank --- */
+.rank-badge {
+    display: inline-block; padding: 0.5rem 1.25rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white; border-radius: 99px; font-weight: 700;
+    margin-bottom: 1rem;
 }
+.result-score { font-size: 4rem; font-weight: 900; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+
+.ability-section { background: #f8fafc; padding: 1.5rem; border-radius: 20px; margin: 1.5rem 0; border: 1px solid var(--border); }
+.ability-item { margin-bottom: 1rem; }
+.ability-label { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem; }
+.ability-bar { height: 6px; background: #e2e8f0; border-radius: 3px; }
+.ability-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 1s; }
+
+/* --- Questions UI --- */
+.progress-bar { height: 8px; background: var(--border); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; }
+.progress-inner { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.3s; }
+.question-text { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.4; }
 
 /* Mobile */
 @media (max-width: 480px) {
-  .app-container {
-    padding: 1rem;
-  }
-  .glass-card {
-    padding: 1.5rem;
-    border-radius: 24px;
-  }
-  h1 {
-    font-size: 2.25rem;
-  }
-  .visual-pattern {
-    gap: 8px;
-  }
-  .pattern-box {
-    width: 45px;
-    height: 45px;
-    font-size: 1.4rem;
-  }
+  .app-container { padding: 1rem; }
+  .glass-card { padding: 1.5rem; }
+  h1 { font-size: 2rem; }
 }
