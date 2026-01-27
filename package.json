@@ -1,0 +1,25 @@
+{
+  "name": "-qtestgame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "dev": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FerhatSezgin/iqtestgame.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/FerhatSezgin/iqtestgame/issues"
+  },
+  "homepage": "https://github.com/FerhatSezgin/iqtestgame#readme",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
+}
