@@ -12,15 +12,14 @@
 <body>
     <div class="app-container" id="app">
         <div class="glass-card">
-            <!-- Motivasyon Maskotu -->
-            <div class="mascot-container">
-                <div class="mascot" id="mascot-face">🦊</div>
-            </div>
 
             <div id="screen-welcome">
                 <!-- Kullanıcı Profil Kartı -->
                 <div class="user-profile-card">
                     <div class="user-info">
+                        <div class="mascot-container-inline">
+                            <div class="mascot" id="mascot-face">🦊</div>
+                        </div>
                         <div class="level-badge">LVL <span id="user-level">1</span></div>
                         <div class="xp-container">
                             <div class="xp-bar"><div class="xp-fill" id="xp-progress-fill"></div></div>
@@ -34,12 +33,14 @@
 
                 <h1>IQ Test Pro</h1>
                 
-                <!-- Günlük Görev -->
-                <div class="daily-quest" id="daily-quest">
-                    <div class="quest-icon">⚡</div>
-                    <div>
-                        <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Günlük Görev</div>
-                        <div class="quest-text" id="quest-description">Bugün 105 IQ puanını aş!</div>
+                <!-- Günlük Görev Paneli -->
+                <div class="daily-quest-board">
+                    <div class="board-header">
+                        <span class="quest-icon-mini">⚡</span>
+                        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary);">Bugünkü Görevlerin</span>
+                    </div>
+                    <div id="daily-quest-list">
+                        <!-- Görevler app.js tarafından doldurulacak -->
                     </div>
                 </div>
 

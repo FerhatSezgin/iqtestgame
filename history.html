@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .stats-grid {
             display: grid;
@@ -63,6 +64,21 @@
             font-weight: 700;
         }
         .empty-state { text-align: center; padding: 3rem; color: var(--text-muted); }
+        .chart-container-elite {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+        .chart-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 <body>
@@ -84,6 +100,16 @@
                     <span class="stat-value" id="stat-total">-</span>
                     <span class="stat-label">Toplam Test</span>
                 </div>
+            </div>
+
+            <div class="chart-container-elite">
+                <h3 class="chart-title">📈 IQ Gelişim Grafiği</h3>
+                <canvas id="iqLineChart"></canvas>
+            </div>
+
+            <div class="chart-container-elite">
+                <h3 class="chart-title">🕸️ Kategori Başarı Analizi</h3>
+                <canvas id="categoryRadarChart"></canvas>
             </div>
 
             <div class="history-card">
@@ -125,14 +151,15 @@
 
             list.innerHTML = '';
             // Son eklenen en üstte
-            history.reverse().forEach(h => {
+            const historyToDisplay = [...history].reverse();
+            historyToDisplay.forEach(h => {
                 const item = document.createElement('div');
                 item.className = 'history-item';
                 
                 let catHtml = '';
                 if (h.categories) {
                     Object.keys(h.categories).forEach(cat => {
-                        catHtml += `<span class="cat-mini-badge">${cat[0]}: ${h.categories[cat]}</span>`;
+                        catHtml += `<span class="cat-mini-badge">${cat}: ${h.categories[cat]}</span>`;
                     });
                 }
 
@@ -145,6 +172,72 @@
                     <div class="item-iq">${h.iq} IQ</div>
                 `;
                 list.appendChild(item);
+            });
+
+            renderCharts(history);
+        }
+
+        function renderCharts(history) {
+            const ctxLine = document.getElementById('iqLineChart').getContext('2d');
+            const ctxRadar = document.getElementById('categoryRadarChart').getContext('2d');
+
+            // Line Chart: IQ Progress
+            new Chart(ctxLine, {
+                type: 'line',
+                data: {
+                    labels: history.map((_, i) => `${i + 1}. Test`),
+                    datasets: [{
+                        label: 'IQ Skoru',
+                        data: history.map(h => h.iq),
+                        borderColor: '#6366f1',
+                        backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#6366f1',
+                        pointRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: false, grid: { color: '#f1f5f9' } },
+                        x: { grid: { display: false } }
+                    }
+                }
+            });
+
+            // Radar Chart: Category Averages
+            const cats = ['Mantık', 'Matematik', 'Görsel', 'Sözel'];
+            const catData = cats.map(cat => {
+                const total = history.reduce((acc, curr) => acc + (curr.categories[cat] || 0), 0);
+                return total / history.length;
+            });
+
+            new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: cats,
+                    datasets: [{
+                        label: 'Başarı Oranı',
+                        data: catData,
+                        backgroundColor: 'rgba(168, 85, 247, 0.2)',
+                        borderColor: '#a855f7',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#a855f7'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 5, // Her kategori 5 soru varsayıyoruz
+                            ticks: { display: false }
+                        }
+                    },
+                    plugins: { legend: { display: false } }
+                }
             });
         }
 

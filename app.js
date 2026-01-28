@@ -84,21 +84,42 @@ const questionsDB = {
     ]
 };
 
+const QUEST_POOL = [
+    { id: 'high_iq', text: "115 IQ puanını aş!", check: (finalIQ) => finalIQ > 115 },
+    { id: 'fast_test', text: "Testi 2.5 dakikadan kısa sürede bitir!", check: (_, totalTime) => totalTime < 150 },
+    { id: 'perfect_run', text: "Kusursuz (15/15) skor yap!", check: (_, __, score) => score === 15 },
+    { id: 'visual_pro', text: "Görsel kategorisinde %100 başarı!", check: (_, __, ___, cats) => cats['Görsel'] === currentState.categoryTotal['Görsel'] },
+    { id: 'math_pro', text: "Matematik kategorisinde %100 başarı!", check: (_, __, ___, cats) => cats['Matematik'] === currentState.categoryTotal['Matematik'] },
+    { id: 'logic_pro', text: "Mantık kategorisinde %100 başarı!", check: (_, __, ___, cats) => cats['Mantık'] === currentState.categoryTotal['Mantık'] }
+];
+
 function initDailyQuest() {
     const today = new Date().toDateString();
     const lastDate = localStorage.getItem('last_quest_date');
     
-    if (lastDate !== today) {
-        const quests = ["110 IQ puanını aş!", "Testi 3 dakikadan kısa sürede bitir!", "Kusursuz (20/20) skor yap!", "Görsel kategorisinde tam puan al!"];
-        const randomQuest = quests[Math.floor(Math.random() * quests.length)];
-        localStorage.setItem('daily_quest_text', randomQuest);
+    if (lastDate !== today || !localStorage.getItem('daily_quests')) {
+        // 3 rastgele benzersiz görev seç
+        const shuffled = [...QUEST_POOL].sort(() => 0.5 - Math.random());
+        const selectedQuests = shuffled.slice(0, 3);
+        
+        localStorage.setItem('daily_quests', JSON.stringify(selectedQuests.map(q => ({ ...q, done: false }))));
         localStorage.setItem('last_quest_date', today);
-        localStorage.setItem('daily_quest_done', 'false');
     }
     
-    const questText = localStorage.getItem('daily_quest_text');
-    const isDone = localStorage.getItem('daily_quest_done') === 'true';
-    document.getElementById('quest-description').innerText = questText + (isDone ? " ✅" : "");
+    renderQuestBoard();
+}
+
+function renderQuestBoard() {
+    const quests = JSON.parse(localStorage.getItem('daily_quests') || '[]');
+    const container = document.getElementById('daily-quest-list');
+    if (!container) return;
+
+    container.innerHTML = quests.map(q => `
+        <div class="quest-item ${q.done ? 'done' : ''}">
+            <span class="quest-item-text">${q.text}</span>
+            <span class="quest-status-icon">${q.done ? '✅' : '⏳'}</span>
+        </div>
+    `).join('');
 }
 
 function startTest(mode) {
@@ -187,16 +208,41 @@ function processResults() {
     if (currentState.categoryScores['Matematik'] === 5) grantBadge('math_genius');
     if (currentState.categoryScores['Mantık'] === 5) grantBadge('logic_master');
     
-    const questText = localStorage.getItem('daily_quest_text');
-    if (questText && questText.includes("IQ") && finalIQ > 105) completeDailyQuest();
-    if (questText && questText.includes("3 dakika") && totalTime < 180) completeDailyQuest();
-    if (questText && questText.includes("Kusursuz") && currentState.score === 20) completeDailyQuest();
+    const quests = JSON.parse(localStorage.getItem('daily_quests') || '[]');
+    let updated = false;
+
+    quests.forEach(q => {
+        if (!q.done) {
+            const questData = QUEST_POOL.find(p => p.id === q.id);
+            if (questData && questData.check(finalIQ, totalTime, currentState.score, currentState.categoryScores)) {
+                q.done = true;
+                updated = true;
+                grantBadge('daily_hero'); // Opsiyonel: Her görevden sonra rozet verilebilir mi?
+            }
+        }
+    });
+
+    if (updated) {
+        localStorage.setItem('daily_quests', JSON.stringify(quests));
+        renderQuestBoard();
+    }
 
     calculateXP(finalIQ, currentState.score);
     updateStreak();
+    updateDynamicMascot(finalIQ);
     displayFinalResults(finalIQ);
 }
 
+function updateDynamicMascot(iq) {
+    let icon = '🦊';
+    if (iq > 140) icon = '👑';
+    else if (iq > 120) icon = '🧠';
+    else if (iq > 100) icon = '😊';
+    else icon = '🤔';
+    
+    updateMascot(icon);
+    // User request: Mascot is static (no animation), only the emoji changes.
+}
 function calculateXP(iq, correctAnswers) {
     const earnedXP = Math.round((iq * 2.5) + (correctAnswers * 70));
     currentState.xp += earnedXP;
@@ -212,7 +258,27 @@ function calculateXP(iq, correctAnswers) {
     localStorage.setItem('user_xp', currentState.xp);
     localStorage.setItem('user_level', currentState.level);
     
+    trackCategoryXP(currentState.categoryScores);
     return earnedXP;
+}
+
+function trackCategoryXP(sessionCats) {
+    let catMastery = JSON.parse(localStorage.getItem('category_mastery') || '{}');
+    const cats = ['Mantık', 'Matematik', 'Görsel', 'Sözel'];
+    
+    cats.forEach(cat => {
+        if (!catMastery[cat]) catMastery[cat] = { xp: 0, level: 1 };
+        const gainedXP = (sessionCats[cat] || 0) * 100; // Her doğru cevap için 100 XP
+        catMastery[cat].xp += gainedXP;
+        
+        const newLevel = Math.floor(catMastery[cat].xp / 500) + 1; // Her 500 XP'de bir kategori seviyesi
+        if (newLevel > catMastery[cat].level) {
+            console.log(`${cat} Seviyesi Atlandı: ${newLevel}`);
+        }
+        catMastery[cat].level = newLevel;
+    });
+    
+    localStorage.setItem('category_mastery', JSON.stringify(catMastery));
 }
 
 function updateStreak() {
@@ -318,14 +384,7 @@ function updateMascot(icon) {
     if (mascotFace) mascotFace.innerText = icon;
 }
 
-function completeDailyQuest() {
-    const isDone = localStorage.getItem('daily_quest_done') === 'true';
-    if (!isDone) {
-        localStorage.setItem('daily_quest_done', 'true');
-        grantBadge('daily_hero');
-        initDailyQuest();
-    }
-}
+// completeDailyQuest fonksiyonu kaldırıldı, görev mantığı processResults içine taşındı.
 
 function startTimer() {
     const timerEl = document.getElementById('timer');
