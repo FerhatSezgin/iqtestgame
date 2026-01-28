@@ -46,12 +46,15 @@
 
                 <p class="subtitle">Zekanı bilimsel metodlarla ölç, rütbeni yükselt ve rozetleri topla!</p>
                 
-                <div style="display: grid; gap: 1rem;">
+                <div class="action-grid">
                     <button class="btn btn-primary" onclick="startTest('kids')">👦 Çocuk Modu </button>
                     <button class="btn btn-primary" onclick="startTest('adults')">👨‍💼 Yetişkin Modu </button>
-                    <button class="btn btn-secondary" onclick="viewHistory()">📊 Geçmiş Skorlarım</button>
-                    <button class="btn btn-secondary" onclick="showCollectionScreen()">📚 Kart Koleksiyonum</button>
-                    <button class="btn btn-secondary" onclick="showBadgesScreen()">🏅 Başarımlarım (Rozetler)</button>
+                </div>
+                
+                <div class="secondary-actions-row">
+                    <button class="btn-mini" onclick="viewHistory()">📊 Geçmiş</button>
+                    <button class="btn-mini" onclick="showCollectionScreen()">📚 Koleksiyon</button>
+                    <button class="btn-mini" onclick="showBadgesScreen()">🏅 Başarım</button>
                 </div>
             </div>
 

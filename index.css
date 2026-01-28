@@ -40,7 +40,7 @@ body {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 32px;
-  padding: 2.5rem;
+  padding: 1.5rem;
   box-shadow: var(--shadow-elite);
   position: relative;
   overflow: hidden;
@@ -51,27 +51,45 @@ body {
   background: linear-gradient(90deg, var(--primary), var(--secondary));
 }
 
-h1 { font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 0.5rem; }
-.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 2rem; }
+h1 { font-size: 1.8rem; font-weight: 800; text-align: center; margin-bottom: 0.25rem; }
+.subtitle { text-align: center; color: var(--text-muted); margin-bottom: 1.25rem; font-size: 0.9rem; }
 
 .btn {
   display: flex; align-items: center; justify-content: center; gap: 0.75rem;
-  width: 100%; padding: 1.1rem; border: none; border-radius: 20px;
-  font-size: 1.1rem; font-weight: 600; cursor: pointer;
-  transition: all 0.2s; margin-bottom: 1rem;
+  width: 100%; padding: 1rem; border: none; border-radius: 20px;
+  font-size: 1rem; font-weight: 600; cursor: pointer;
+  transition: all 0.2s; margin-bottom: 0.75rem;
 }
 .btn-primary { background: var(--primary); color: white; }
 .btn-primary:active { transform: scale(0.98); }
 .btn-secondary { background: var(--background); border: 1px solid var(--border); color: var(--text); }
 .btn-secondary:active { transform: scale(0.98); }
 
+/* --- Grid Layouts --- */
+.action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 0.75rem; }
+.secondary-actions-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
+
+.btn-mini {
+    background: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 0.6rem 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+}
+.btn-mini:active { transform: scale(0.95); background: #f1f5f9; }
+
 /* --- User Profile Card --- */
 .user-profile-card {
     background: #f8fafc;
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 1rem;
-    margin-bottom: 1.5rem;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -107,12 +125,12 @@ h1 { font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 0.5
     background: #f1f5f9;
     border: 1px solid var(--border);
     border-radius: 20px;
-    padding: 1rem;
-    margin-bottom: 2rem;
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
 }
 .board-header { display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
 .quest-icon-mini { font-size: 1rem; }
-.quest-item { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px dashed var(--border); font-size: 0.85rem; font-weight: 600; color: var(--text-muted); }
+.quest-item { display: flex; justify-content: space-between; align-items: center; padding: 0.35rem 0; border-bottom: 1px dashed var(--border); font-size: 0.8rem; font-weight: 600; color: var(--text-muted); }
 .quest-item:last-child { border-bottom: none; }
 .quest-item.done { color: var(--success); }
 .quest-item.done .quest-item-text { text-decoration: line-through; opacity: 0.7; }
