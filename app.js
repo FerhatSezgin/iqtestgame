@@ -93,6 +93,30 @@ const QUEST_POOL = [
     { id: 'logic_pro', text: "Mantık kategorisinde %100 başarı!", check: (_, __, ___, cats) => cats['Mantık'] === currentState.categoryTotal['Mantık'] }
 ];
 
+const MASTER_CARDS = [
+    { id: 'einstein', name: 'Albert Einstein', rarity: 'Legendary', icon: '🧬', hint: '160+ IQ Gerektirir' },
+    { id: 'tesla', name: 'Nikola Tesla', rarity: 'Epic', icon: '⚡', hint: '140+ IQ Gerektirir' },
+    { id: 'curie', name: 'Marie Curie', rarity: 'Rare', icon: '🧪', hint: '125+ IQ Gerektirir' },
+    { id: 'da_vinci', name: 'Leonardo da Vinci', rarity: 'Epic', icon: '🎨', hint: 'Görsel %100 Başarı' }
+];
+
+function checkCollectibles(iq, cats) {
+    let earned = JSON.parse(localStorage.getItem('earned_cards') || '[]');
+    let newCard = null;
+
+    if (iq >= 160 && !earned.includes('einstein')) newCard = MASTER_CARDS[0];
+    else if (iq >= 140 && !earned.includes('tesla')) newCard = MASTER_CARDS[1];
+    else if (iq >= 125 && !earned.includes('curie')) newCard = MASTER_CARDS[2];
+    else if (cats['Görsel'] === currentState.categoryTotal['Görsel'] && !earned.includes('da_vinci')) newCard = MASTER_CARDS[3];
+
+    if (newCard) {
+        earned.push(newCard.id);
+        localStorage.setItem('earned_cards', JSON.stringify(earned));
+        return newCard;
+    }
+    return null;
+}
+
 function initDailyQuest() {
     const today = new Date().toDateString();
     const lastDate = localStorage.getItem('last_quest_date');
@@ -140,7 +164,7 @@ function startTest(mode) {
 }
 
 function showScreen(screenId) {
-    ['screen-welcome', 'screen-test', 'screen-confirmation', 'screen-results', 'screen-badges'].forEach(id => {
+    ['screen-welcome', 'screen-test', 'screen-confirmation', 'screen-results', 'screen-badges', 'screen-collection'].forEach(id => {
         document.getElementById(id).style.display = id === screenId ? 'block' : 'none';
     });
     
@@ -227,10 +251,42 @@ function processResults() {
         renderQuestBoard();
     }
 
+    const earnedCard = checkCollectibles(finalIQ, currentState.categoryScores);
+    if (earnedCard) showCardUnlock(earnedCard);
+
     calculateXP(finalIQ, currentState.score);
     updateStreak();
     updateDynamicMascot(finalIQ);
     displayFinalResults(finalIQ);
+}
+
+function getRecommendation(cats) {
+    let weakest = 'Mantık';
+    let minScore = 5;
+    Object.keys(cats).forEach(cat => {
+        if (cats[cat] < minScore) {
+            minScore = cats[cat];
+            weakest = cat;
+        }
+    });
+
+    const recommendations = {
+        'Mantık': "Mantıksal çıkarım yeteneğini güçlendirmek için satranç veya strateji oyunlarına odaklanabilirsin.",
+        'Matematik': "Sayısal zekanı parlatmak için günlük pratik matematik bulmacaları çözmeyi dene.",
+        'Görsel': "Görsel algını keskinleştirmek için fotoğrafçılıkla ilgilenebilir veya 3D puzzlelar çözebilirsin.",
+        'Sözel': "Sözel zekanı zirveye taşımak için düzenli kitap okuma alışkanlığı ve kelime oyunları harikadır."
+    };
+
+    return recommendations[weakest] || "Harika bir denge! Tüm alanlarda kendini geliştirmeye devam et.";
+}
+
+function getGlobalRank(iq) {
+    // Normal dağılıma (Bell Curve) göre tahmini yüzde
+    if (iq > 145) return "Dünya'nın en zeki %0.1'lik dilimindesin! 👑";
+    if (iq > 130) return "Dünya'nın en zeki %2'lik dilimindesin! 🧠";
+    if (iq > 115) return "Dünya'nın en zeki %15'lik dilimindesin! 📈";
+    if (iq > 100) return "Dünya'nın en zeki %50'lik dilimindesin. Ortalamanın üzerindesin! 😊";
+    return "Gelişime açık bir zihin! Pratik yaparak yüzdelik dilimini yükseltebilirsin. 🤔";
 }
 
 function updateDynamicMascot(iq) {
@@ -324,6 +380,13 @@ function displayFinalResults(iq) {
         bars.innerHTML += `<div class="ability-item"><div class="ability-label"><span>${cat}</span><span>%${Math.round(p)}</span></div><div class="ability-bar"><div class="ability-fill" style="width: ${p}%"></div></div></div>`;
     });
 
+    // v2 enhancements
+    const recommendationEl = document.getElementById('result-recommendation');
+    if (recommendationEl) recommendationEl.innerText = getRecommendation(currentState.categoryScores);
+
+    const globalRankEl = document.getElementById('global-rank-percent');
+    if (globalRankEl) globalRankEl.innerText = getGlobalRank(iq);
+
     renderEarnedBadges();
     saveToHistory(iq, rank, currentState.categoryScores);
     updateProfileUI();
@@ -360,11 +423,17 @@ function renderEarnedBadges() {
     });
 }
 
+function showCardUnlock(card) {
+    // Basit bir alert yerine şık bir bilgilendirme yapabiliriz ama şimdilik konsol ve UI'a ekleme
+    console.log("KART KAZANDIN!", card.name);
+}
+
 function showBadgesScreen() {
     showScreen('screen-badges');
     const container = document.getElementById('full-badges-list');
     const earned = JSON.parse(localStorage.getItem('earned_badges') || '[]');
     container.innerHTML = '';
+    
     ALL_BADGES.forEach(badge => {
         const isEarned = earned.includes(badge.id);
         container.innerHTML += `
@@ -374,6 +443,25 @@ function showBadgesScreen() {
                     <span class="badge-name">${badge.name} ${isEarned ? '✅' : '🔒'}</span>
                     <span class="badge-desc">${badge.desc}</span>
                 </div>
+            </div>
+        `;
+    });
+}
+
+function showCollectionScreen() {
+    showScreen('screen-collection');
+    const container = document.getElementById('collection-grid');
+    const earnedCards = JSON.parse(localStorage.getItem('earned_cards') || '[]');
+    container.innerHTML = '';
+
+    MASTER_CARDS.forEach(card => {
+        const isEarned = earnedCards.includes(card.id);
+        container.innerHTML += `
+            <div class="mastery-card ${isEarned ? 'earned' : 'locked'}">
+                <span class="card-icon-large">${isEarned ? card.icon : '❓'}</span>
+                <span class="card-name-label">${isEarned ? card.name : '???'}</span>
+                <span class="card-rarity-tag ${card.rarity.toLowerCase()}">${card.rarity}</span>
+                <div class="card-requirement">${isEarned ? '✅ Koleksiyonunda' : '💡 ' + card.hint}</div>
             </div>
         `;
     });
@@ -418,6 +506,19 @@ function saveToHistory(iq, rank, categories) {
 
 function viewHistory() { window.open('history.html', '_blank'); }
 function restart() { initDailyQuest(); showScreen('screen-welcome'); updateMascot('🦊'); }
+
+function generateShareCard() {
+    const iq = document.getElementById('iq-score').innerText;
+    const rank = document.getElementById('result-rank').innerText;
+    
+    document.getElementById('share-iq').innerText = iq;
+    document.getElementById('share-rank').innerText = rank;
+    document.getElementById('share-card-modal').style.display = 'flex';
+}
+
+function closeShareModal() {
+    document.getElementById('share-card-modal').style.display = 'none';
+}
 
 window.onload = () => {
     initDailyQuest();

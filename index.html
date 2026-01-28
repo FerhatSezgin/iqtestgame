@@ -50,6 +50,7 @@
                     <button class="btn btn-primary" onclick="startTest('kids')">👦 Çocuk Modu </button>
                     <button class="btn btn-primary" onclick="startTest('adults')">👨‍💼 Yetişkin Modu </button>
                     <button class="btn btn-secondary" onclick="viewHistory()">📊 Geçmiş Skorlarım</button>
+                    <button class="btn btn-secondary" onclick="showCollectionScreen()">📚 Kart Koleksiyonum</button>
                     <button class="btn btn-secondary" onclick="showBadgesScreen()">🏅 Başarımlarım (Rozetler)</button>
                 </div>
             </div>
@@ -93,10 +94,23 @@
                     <div id="ability-bars"></div>
                 </div>
 
+                <!-- v2: Insights & Rank -->
+                <div class="insights-card">
+                    <div class="insight-item">
+                        <span class="insight-label">📊 Global Sıralama:</span>
+                        <span id="global-rank-percent" class="insight-value">-</span>
+                    </div>
+                    <div class="insight-item" style="margin-top: 1rem;">
+                        <span class="insight-label">💡 Gelişim Önerisi:</span>
+                        <p id="result-recommendation" class="insight-text">-</p>
+                    </div>
+                </div>
+
                 <p id="result-text" class="subtitle" style="margin-bottom: 2rem;"></p>
                 
                 <div style="display: grid; gap: 0.8rem;">
-                    <button class="btn btn-primary" onclick="restart()">🔄 Tekrar dene</button>
+                    <button class="btn btn-primary" onclick="generateShareCard()">🔗 Başarını Kanıtla (Paylaş)</button>
+                    <button class="btn btn-secondary" onclick="restart()">🔄 Tekrar dene</button>
                     <button class="btn btn-secondary" onclick="viewHistory()">📈 Gelişim Grafiğini Gör</button>
                 </div>
             </div>
@@ -104,10 +118,37 @@
             <div id="screen-badges" style="display: none;">
                 <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 1.5rem;">🏅 Başarımlarım</h2>
                 <div id="full-badges-list" class="badges-container">
-                    <!-- Tüm rozetler burada listelenecek -->
+                    <!-- Rozetler burada listelenecek -->
                 </div>
                 <button class="btn btn-secondary" onclick="restart()" style="margin-top: 1.5rem;">Ana Sayfaya Dön</button>
             </div>
+
+            <div id="screen-collection" style="display: none;">
+                <h2 style="text-align: center; font-size: 1.8rem; margin-bottom: 0.5rem;">📚 Kart Koleksiyonum</h2>
+                <p class="subtitle" style="margin-bottom: 1.5rem;">Zeka limitlerini zorlayarak efsanevi dâhilerin kartlarını topla!</p>
+                <div id="collection-grid" class="collection-grid">
+                    <!-- Kartlar JavaScript ile dolacak -->
+                </div>
+                <button class="btn btn-secondary" onclick="restart()" style="margin-top: 1.5rem;">Ana Sayfaya Dön</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="share-card-modal" class="modal-overlay" style="display: none;">
+        <div class="share-card-content">
+            <div class="share-card-inner" id="printable-card">
+                <div class="card-brand">IQ TEST PRO ELITE</div>
+                <div class="card-main">
+                    <div class="card-iq-label">Zeka Skoru</div>
+                    <div class="card-iq-value" id="share-iq">140</div>
+                </div>
+                <div class="card-footer">
+                    <div id="share-rank" class="card-rank">Evrensel Deha</div>
+                    <div class="card-url">iqtestpro.elite</div>
+                </div>
+            </div>
+            <p class="share-tip">Ekran görüntüsü alarak arkadaşlarınla paylaş!</p>
+            <button class="btn btn-primary" onclick="closeShareModal()">Kapat</button>
         </div>
     </div>
 

@@ -193,10 +193,75 @@ h1 { font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 0.5
 .ability-bar { height: 6px; background: #e2e8f0; border-radius: 3px; }
 .ability-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width 1s; }
 
+/* --- Insights & Rank (v2) --- */
+.insights-card {
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+.insight-label { display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--primary); margin-bottom: 0.25rem; }
+.insight-value { font-size: 0.95rem; font-weight: 700; color: var(--text); }
+.insight-text { font-size: 0.85rem; line-height: 1.5; color: var(--text-muted); font-weight: 500; }
+
+/* --- Collection Grid (v2.1) --- */
+.collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+.mastery-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 1.25rem;
+    text-align: center;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+}
+.mastery-card.locked { opacity: 0.6; filter: grayscale(1); background: #f1f5f9; }
+.mastery-card.earned { border: 2px solid var(--primary); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.card-icon-large { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+.card-name-label { font-size: 0.9rem; font-weight: 800; display: block; margin-bottom: 0.25rem; }
+.card-rarity-tag { font-size: 0.65rem; font-weight: 800; text-transform: uppercase; padding: 2px 8px; border-radius: 6px; background: #e2e8f0; color: #64748b; }
+.card-requirement { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.75rem; border-top: 1px dashed var(--border); padding-top: 0.5rem; }
+
+.earned .card-rarity-tag.legendary { background: #fef3c7; color: #b45309; }
+.earned .card-rarity-tag.epic { background: #f5f3ff; color: #6d28d9; }
+.earned .card-rarity-tag.rare { background: #ecfdf5; color: #047857; }
+
 /* --- Questions UI --- */
 .progress-bar { height: 8px; background: var(--border); border-radius: 8px; margin-bottom: 1rem; overflow: hidden; }
 .progress-inner { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: width 0.3s; }
 .question-text { font-size: 1.3rem; font-weight: 700; margin-bottom: 1.5rem; line-height: 1.4; }
+
+/* --- Share Card Modal (v2) --- */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center; z-index: 9999;
+}
+.share-card-content { width: 90%; max-width: 400px; text-align: center; }
+.share-card-inner {
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    border-radius: 24px; padding: 2.5rem; color: white; margin-bottom: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    position: relative; overflow: hidden;
+}
+.share-card-inner::after {
+    content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+    background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 60%);
+    pointer-events: none;
+}
+.card-brand { font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; opacity: 0.8; margin-bottom: 2rem; color: #818cf8; }
+.card-iq-label { font-size: 1rem; opacity: 0.7; margin-bottom: 0.5rem; font-weight: 500; }
+.card-iq-value { font-size: 5rem; font-weight: 900; line-height: 1; margin-bottom: 2rem; text-shadow: 0 4px 20px rgba(99,102,241,0.4); }
+.card-rank { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(90deg, #fff, #818cf8); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+.card-url { font-size: 0.7rem; opacity: 0.5; font-weight: 600; }
+.share-tip { color: white; opacity: 0.7; font-size: 0.85rem; margin-bottom: 1.5rem; }
 
 /* Mobile */
 @media (max-width: 480px) {
